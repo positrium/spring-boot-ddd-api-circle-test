@@ -4,3 +4,12 @@ spring:
     username: root
     password: ''
     driverClassName: com.mysql.jdbc.Driver
+logging:
+    level:
+        springboot.sqltemplate.example: ERROR
+        springboot.sqltemplate.core: ERROR
+        org.springframework: ERROR
+        org.springframework.jdbc.core: ERROR
+        org.mybatis: ERROR
+        org.freemarker: ERROR
+mybatis.configuration.mapUnderscoreToCamelCase: true

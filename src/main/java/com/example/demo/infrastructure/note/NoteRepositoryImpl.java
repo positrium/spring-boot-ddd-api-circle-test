@@ -1,9 +1,6 @@
 package com.example.demo.infrastructure.note;
 
-import com.example.demo.domain.model.note.Note;
-import com.example.demo.domain.model.note.NoteContent;
-import com.example.demo.domain.model.note.NoteRepository;
-import com.example.demo.domain.model.note.NoteTitle;
+import com.example.demo.domain.model.note.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,19 +15,20 @@ public class NoteRepositoryImpl implements NoteRepository {
 
   @Override
   public void save(Note note) {
-    NoteDto noteDto = new NoteDto(note);
-    noteMapper.save(noteDto);
+    NoteDxo noteDxo = new NoteDxo(note);
+    noteMapper.save(noteDxo);
   }
 
   @Override
   public List<Note> list() {
     List<Note> list = new ArrayList<>();
 
-    List<NoteDto> dtoList = noteMapper.list();
-    for (NoteDto noteDto : dtoList) {
-      NoteTitle noteTitle = new NoteTitle(noteDto.getTitle());
-      NoteContent noteContent = new NoteContent(noteDto.getContent());
-      Note note = new Note(noteTitle, noteContent);
+    List<NoteDxo> dtoList = noteMapper.list();
+    for (NoteDxo noteDxo : dtoList) {
+      NoteId noteId = new NoteId(noteDxo.getId());
+      NoteTitle noteTitle = new NoteTitle(noteDxo.getTitle());
+      NoteContent noteContent = new NoteContent(noteDxo.getContent());
+      Note note = new Note(noteId, noteTitle, noteContent);
 
       list.add(note);
     }

@@ -1,7 +1,8 @@
 package com.example.demo.domain.service;
 
 import com.example.demo.domain.model.note.Note;
+import com.example.demo.domain.model.note.NoteId;
 
 public interface NoteCreateService {
-  void create(Note note);
+  NoteId create(Note note);
 }

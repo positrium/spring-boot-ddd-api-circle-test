@@ -1,10 +1,7 @@
 package com.example.demo.infrastructure.note;
 
 import com.example.demo.DemoApplication;
-import com.example.demo.domain.model.note.Note;
-import com.example.demo.domain.model.note.NoteContent;
-import com.example.demo.domain.model.note.NoteRepository;
-import com.example.demo.domain.model.note.NoteTitle;
+import com.example.demo.domain.model.note.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +34,7 @@ public class NoteRepositoryImplTest {
   public void save_success() {
     NoteTitle noteTitle = new NoteTitle("hoge");
     NoteContent noteContent = new NoteContent("fuga");
-    Note note = new Note(noteTitle, noteContent);
+    Note note = NoteFactory.create(noteTitle, noteContent);
 
     noteRepository.save(note);
 

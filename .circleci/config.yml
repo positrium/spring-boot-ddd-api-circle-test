@@ -11,6 +11,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
+      - image: circleci/mysql:5.7
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -22,9 +23,16 @@ jobs:
     environment:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
+      SPRING_PROFILES_ACTIVE: ci-test
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+
+    command: [--character-set-server=utf8, --collation-server=utf8_unicode_ci, --explicit_defaults_for_timestamp=true, --skip-character-set-client-handshake, --character-set-filesystem=utf8]
 
     steps:
       - checkout
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
 
       # Download and cache dependencies
       - restore_cache:
@@ -33,7 +41,12 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: mvn dependency:go-offline
+      #- run:
+          #name: setup legacy library
+          #command: mvn install:install-file -Dfile=legacyLibraries/kuromoji-0.7.7.jar -DgroupId=org.atilika.kuromoji -DartifactId=kuromoji -Dversion=0.7.7 -Dpackaging=jar -DgeneratePom=true
+      - run:
+          name: setup remote library
+          command: mvn dependency:go-offline
 
       - save_cache:
           paths:
@@ -41,6 +54,12 @@ jobs:
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
       # run tests!
-      - run: mvn integration-test
-
+      - run:
+          name: db migration
+          command: mvn flyway:migrate -Dflyway.user=root -Dflyway.password="" -Dflyway.url=jdbc:mysql://localhost:3306/circle_test -Dflyway.driver=com.mysql.jdbc.Driver -Dflyway.placeholderReplacement=false
+      - run:
+          name: test
+          command: mvn clean clover:setup test clover:aggregate clover:clover
+      - store_artifacts:
+          path: target/site/clover
 #
