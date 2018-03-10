@@ -1,0 +1,45 @@
+pipeline:
+  restore-cache:
+    image: drillster/drone-volume-cache
+    restore: true
+    mount:
+      - /drone/.m2
+    volumes:
+      - /tmp/cache:/cache
+    ttl: 7
+    when:
+      event: push
+
+  test:
+    image: maven:3.5.2-jdk-8
+    commands:
+      - sleep 10
+      - export SPRING_PROFILES_ACTIVE=ci-test
+      - mvn dependency:go-offline -Dmaven.repo.local=/drone/.m2/repository clean package install test
+
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    rebuild: true
+    mount:
+      - /drone/.m2
+    volumes:
+      - /tmp/cache:/cache
+    ttl: 7
+    when:
+      event: push
+
+services:
+  database:
+    image: mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --explicit_defaults_for_timestamp=true --skip-character-set-client-handshake --character-set-filesystem=utf8
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=circle_test
+      - MYSQL_USER=root
+#      - MYSQL_USER=foouser
+#      - MYSQL_PASSWORD=foobar
+#      - MYSQL_DATABASE=test
+#      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    scripts:
+      - mysql -u root -h127.0.0.1 -P 3306 -e 'GRANT ALL ON *.* TO "foouser"@"localhost"'
+      - mysql -u root -h127.0.0.1 -P 3306 -e 'GRANT ALL ON *.* TO "foouser"@"127.0.0.1"'
