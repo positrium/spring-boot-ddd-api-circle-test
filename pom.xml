@@ -54,7 +54,7 @@
           <generateJson>false</generateJson>
           <jdk>1.8</jdk>
           <includes>
-            <include>**/org.hoge.fuga.product/**</include>
+            <include>**/com/example/demo/**</include>
           </includes>
         </configuration>
       </plugin>
