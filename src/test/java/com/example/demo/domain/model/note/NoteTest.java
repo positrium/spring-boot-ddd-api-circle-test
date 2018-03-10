@@ -28,7 +28,7 @@ public class NoteTest {
   public void getNoteTitle() {
     note = NoteFactory.create(new NoteTitle("hoge"), new NoteContent("fuga"));
 
-    assertEquals("fuga", note.getNoteTitle().getValue());
+    assertEquals("hoge", note.getNoteTitle().getValue());
   }
 
   @Test
