@@ -91,7 +91,7 @@ public class NoteControllerTest {
     }.getType());
 
     Assert.assertNull(map.get("error_message"));
-    Assert.assertTrue(((String) map.get("id")).matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"));
+    Assert.assertTrue(((String) map.get("note_id")).matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"));
   }
 
 }
