@@ -1,4 +1,11 @@
-# circle-test
+# env
+
+- spring-boot
+- DDD
+- api ( json )
+- circle.ci 2.0
+
+# setup
 
 ```
 CREATE DATABASE ci_test CHARACTER SET utf8mb4;
