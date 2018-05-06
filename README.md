@@ -1,3 +1,7 @@
+# status
+
+- CircleCI 2.0 [![CircleCI](https://circleci.com/gh/positrium/spring-boot-ddd-api-circle-test/tree/feature%2Ftest.svg?style=svg)](https://circleci.com/gh/positrium/spring-boot-ddd-api-circle-test/tree/feature%2Ftest)
+
 # env
 
 - spring-boot
